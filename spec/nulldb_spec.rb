@@ -256,6 +256,12 @@ describe "NullDB" do
     ActiveRecord::Base.should_receive(:connection_pool).and_raise(ActiveRecord::ConnectionNotEstablished)
     lambda { NullDB.nullify }.should_not raise_error(ActiveRecord::ConnectionNotEstablished)
   end
+
+  it "should implement database truncation as a noop" do
+    cxn = Employee.connection
+    lambda { cxn.truncate_table('employees') }.should_not raise_error
+  end
+
 end
 
 # need a fallback db for contextual nullification
